@@ -9,7 +9,7 @@ public abstract class SnakeGame {
     private Snake snake;
     private Point apple;
     private int score;
-    public boolean gameOn = true;
+    public boolean gameOn = false;
 
     public SnakeGame(int xBound, int yBound, Snake snake) {
         if (xBound < 1 || yBound < 1) {
@@ -19,24 +19,22 @@ public abstract class SnakeGame {
         this.xBound = xBound;
         this.yBound = yBound;
         this.snake = snake;
-//        randomizeApple();
-        apple = new Point(7, 1);
+        randomizeApple();
     }
 
     public SnakeGame(int xBound, int yBound) {
-        this(xBound, yBound, new Snake(new Point(0, 0), Collections.emptyList(), Direction.RIGHT));
+        this(xBound, yBound, new Snake(new Point(1, 0), Collections.singletonList(new Point(0, 0)),
+                Direction.RIGHT));
     }
 
     public void start() {
         gameOn = true;
-        while (isSnakeInBound()) {
-//            System.out.println("-------------------");
-//            System.out.println("Score: " + score);
-//            System.out.println(toString()); //zamiast tego metoda abstrakcyjna draw();
+        while (isSnakeInBound()&&gameOn) {
+
             draw();
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -44,7 +42,7 @@ public abstract class SnakeGame {
             try {
                 snake.expand();
             } catch (IllegalMoveException e) {
-                System.out.println(toString());
+                System.out.println("Illegal move!");
                 break;
             }
             if (snake.getHead().equals(apple)) {
@@ -53,7 +51,7 @@ public abstract class SnakeGame {
             } else {
                 snake.cutTail();
             }
-            //todo Zakończ grę również w przypadku, gdy wąż zajmuje całe pole gry.
+
         }
         gameOn = false;
         System.out.println("End game");
@@ -104,5 +102,16 @@ public abstract class SnakeGame {
 
     public int getScore() {
         return score;
+    }
+
+    public Snake getSnake() {
+        return snake;
+    }
+
+    public Point getApple() {
+        return apple;
+    }
+    public void setSnakeDirection(Direction direction){
+        snake.setDirection(direction);
     }
 }

@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    public FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/canvas-example.fxml"));
+    private FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view.fxml"));
 
     @Override
     public void start(Stage stage) throws Exception {
